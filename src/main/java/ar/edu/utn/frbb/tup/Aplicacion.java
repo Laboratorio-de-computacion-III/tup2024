@@ -1,9 +1,8 @@
-package ar.edu.utn.frbb.tup;
+package main.java.ar.edu.utn.frbb.tup;
 
-import ar.edu.utn.frbb.tup.utils.Cliente;
-import ar.edu.utn.frbb.tup.utils.Cuenta;
-import ar.edu.utn.frbb.tup.utils.SimpleAdder;
-import ar.edu.utn.frbb.tup.utils.TipoPersona;
+import main.java.ar.edu.utn.frbb.tup.utils.Cliente;
+import main.java.ar.edu.utn.frbb.tup.utils.Cuenta;
+import main.java.ar.edu.utn.frbb.tup.utils.TipoPersona;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,6 +25,8 @@ class Aplicacion {
         cliente.addCuenta(cuentaLuciano2);
 
         System.out.println("Luciano");
+
+        System.out.println(cliente.getBalanceGeneral());
 
     }
 }

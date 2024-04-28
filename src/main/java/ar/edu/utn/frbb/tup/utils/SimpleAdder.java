@@ -1,6 +1,5 @@
-package ar.edu.utn.frbb.tup.utils;
+package main.java.ar.edu.utn.frbb.tup.utils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 

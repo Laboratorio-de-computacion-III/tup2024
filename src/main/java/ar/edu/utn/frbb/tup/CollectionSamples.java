@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup;
+package main.java.ar.edu.utn.frbb.tup;
 
 import java.util.*;
 

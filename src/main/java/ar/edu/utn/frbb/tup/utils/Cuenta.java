@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.utils;
+package main.java.ar.edu.utn.frbb.tup.utils;
 
 import java.time.LocalDateTime;
 

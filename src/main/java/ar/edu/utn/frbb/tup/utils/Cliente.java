@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.utils;
+package main.java.ar.edu.utn.frbb.tup.utils;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -41,5 +41,13 @@ public class Cliente extends Persona{
 
     public void addCuenta(Cuenta cuenta) {
         this.cuentas.add(cuenta);
+    }
+
+    public double getBalanceGeneral() {
+        double balanceTotal = 0.0;
+        for(Cuenta cuenta : cuentas) {
+            balanceTotal += cuenta.getBalance();
+        }
+        return balanceTotal;
     }
 }

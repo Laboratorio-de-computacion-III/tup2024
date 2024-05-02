@@ -6,25 +6,17 @@ import ar.edu.utn.frbb.tup.utils.TipoPersona;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 class Aplicacion {
 
     public static void main(String args[]) {
+        Banco banco = new Banco();
 
-        Cuenta cuentaLuciano = new Cuenta().setNombre("1").setFechaCreacion(LocalDateTime.now()).setBalance(1835);
-        Cuenta cuentaLuciano2 = new Cuenta().setNombre("2").setFechaCreacion(LocalDateTime.now()).setBalance(1500);
-
-        Cliente cliente = new Cliente();
-        cliente.setNombre("Luciano");
-        cliente.setApellido("Salotto");
-        cliente.setFechaNacimiento(LocalDate.of(1978, 2, 7));
-        cliente.setBanco("Provincia");
-        cliente.setTipoPersona(TipoPersona.PERSONA_FISICA);
-        cliente.setFechaAlta(LocalDate.now());
-        cliente.addCuenta(cuentaLuciano);
-        cliente.addCuenta(cuentaLuciano2);
-
-        System.out.println("Luciano");
+        MenuInputProcessor menuInputProcessor = new MenuInputProcessor();
+        menuInputProcessor.renderMenu(banco);
 
         System.out.println(cliente.getBalanceGeneral());
 
@@ -44,4 +36,6 @@ class Aplicacion {
         
 
     }
+
+
 }

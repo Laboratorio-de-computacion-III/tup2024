@@ -1,4 +1,4 @@
-package main.java.ar.edu.utn.frbb.tup.utils;
+package ar.edu.utn.frbb.tup.utils;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -43,8 +43,8 @@ public class Cliente extends Persona{
         this.cuentas.add(cuenta);
     }
 
-    public double getBalanceGeneral() {
-        double balanceTotal = 0.0;
+    public int getBalanceGeneral() {
+        int balanceTotal = 0;
         for(Cuenta cuenta : cuentas) {
             balanceTotal += cuenta.getBalance();
         }

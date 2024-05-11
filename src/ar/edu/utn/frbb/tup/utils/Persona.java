@@ -6,6 +6,8 @@ public class Persona {
     private String nombre;
     private String apellido;
     private long dni;
+    private String direccion;
+    private long telefono;
     private LocalDate fechaNacimiento;
 
     public String getNombre() {
@@ -28,9 +30,24 @@ public class Persona {
         return dni;
     }
 
-    public void setDni(long dni) {
+     public void setDni(long dni) {
         this.dni = dni;
     }
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+    public String getDireccion() {
+        return direccion;
+
+    }
+
+    public void setTelefono(Long telefono) {
+        this.telefono = telefono;
+    }
+    public long getTelefono() {
+        return telefono;
+    }
+   
 
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;

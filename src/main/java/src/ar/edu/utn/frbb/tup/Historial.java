@@ -1,4 +1,4 @@
-package main.java.src.ar.edu.utn.frbb.tup;
+package src.ar.edu.utn.frbb.tup;
 import java.time.LocalDateTime;
 
 public class Historial {

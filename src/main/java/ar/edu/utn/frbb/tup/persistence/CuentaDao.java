@@ -4,6 +4,9 @@ import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.persistence.entity.ClienteEntity;
 import ar.edu.utn.frbb.tup.persistence.entity.CuentaEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CuentaDao  extends AbstractBaseDao{
     @Override
     protected String getEntityName() {
@@ -20,5 +23,17 @@ public class CuentaDao  extends AbstractBaseDao{
             return null;
         }
         return ((CuentaEntity) getInMemoryDatabase().get(id)).toCuenta();
+    }
+
+    public List<Cuenta> getCuentasByCliente(long dni) {
+        List<Cuenta> cuentasDelCliente = new ArrayList<>();
+        for (Object object:
+                getInMemoryDatabase().values()) {
+            CuentaEntity cuenta = ((CuentaEntity) object);
+            if (cuenta.getTitular().equals(dni)) {
+                cuentasDelCliente.add(cuenta.toCuenta());
+            }
+        }
+        return cuentasDelCliente;
     }
 }

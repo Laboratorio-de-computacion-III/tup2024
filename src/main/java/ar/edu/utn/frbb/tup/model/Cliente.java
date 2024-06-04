@@ -12,15 +12,6 @@ public class Cliente extends Persona{
     private String banco;
     private LocalDate fechaAlta;
     private Set<Cuenta> cuentas = new HashSet<>();
-    private List<Long> listaCuentas = new ArrayList<>();
-
-    public List<Long> getListaCuentas() {
-        return listaCuentas;
-    }
-
-    public void setListaCuentas(List<Long> listaCuentas) {
-        this.listaCuentas = listaCuentas;
-    }
 
     public TipoPersona getTipoPersona() {
         return tipoPersona;

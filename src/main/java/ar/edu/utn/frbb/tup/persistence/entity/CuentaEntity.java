@@ -29,11 +29,54 @@ public class CuentaEntity extends BaseEntity{
         cuenta.setNumeroCuenta(this.numeroCuenta);
         cuenta.setTipoCuenta(TipoCuenta.valueOf(this.tipoCuenta));
         cuenta.setFechaCreacion(this.fechaCreacion);
-
-        ClienteDao clienteDao = new ClienteDao();
-        Cliente titular = clienteDao.find(this.titular);
-        cuenta.setTitular(titular);
-
         return cuenta;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public String getTipoCuenta() {
+        return tipoCuenta;
+    }
+
+    public void setTipoCuenta(String tipoCuenta) {
+        this.tipoCuenta = tipoCuenta;
+    }
+
+    public Long getTitular() {
+        return titular;
+    }
+
+    public void setTitular(Long titular) {
+        this.titular = titular;
+    }
+
+    public long getNumeroCuenta() {
+        return numeroCuenta;
+    }
+
+    public void setNumeroCuenta(long numeroCuenta) {
+        this.numeroCuenta = numeroCuenta;
     }
 }

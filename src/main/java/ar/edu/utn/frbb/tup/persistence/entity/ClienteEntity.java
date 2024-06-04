@@ -34,12 +34,6 @@ public class ClienteEntity extends BaseEntity {
         }
     }
 
-    public void addCuenta(Cuenta cuenta) {
-        if (cuentas == null){
-            cuentas = new ArrayList<>();
-        }
-        cuentas.add(cuenta.getNumeroCuenta());
-    }
 
     public Cliente toCliente() {
         Cliente cliente = new Cliente();
@@ -49,7 +43,6 @@ public class ClienteEntity extends BaseEntity {
         cliente.setTipoPersona(TipoPersona.fromString(this.tipoPersona));
         cliente.setFechaAlta(this.fechaAlta);
         cliente.setFechaNacimiento(this.fechaNacimiento);
-        cliente.setListaCuentas(this.cuentas);
 
         return cliente;
     }

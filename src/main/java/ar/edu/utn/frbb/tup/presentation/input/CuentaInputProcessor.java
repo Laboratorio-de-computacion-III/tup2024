@@ -59,23 +59,17 @@ public class CuentaInputProcessor extends BaseInputProcessor{
         cuenta.setFechaCreacion(LocalDate.now().atStartOfDay());
 
         try {
-            Cliente titular = clienteService.buscarClientePorDni(dniTitular);
-            cuenta.setTitular(titular);
-            try {
-                clienteService.agregarCuenta(cuenta, titular);
-            } catch (TipoCuentaAlreadyExistsException e){
-                System.out.println("Error: " + e.getMessage());
-                return;
-            }
-            cuentaDao.save(cuenta);
-            clienteService.darDeAltaCliente(titular);
-            cuentaService.darDeAltaCuenta(cuenta);
+            cuentaService.darDeAltaCuenta(cuenta, dniTitular);
             System.out.println("Cuenta creada con éxito");
+        } catch (TipoCuentaAlreadyExistsException e){
+            System.out.println("Error: " + e.getMessage());
+            return;
+        } catch (CuentaAlreadyExistsException e) {
+            throw new RuntimeException(e);
         } catch (Exception e) {
             System.out.println("Error al dar de alta la cuenta: " + e.getMessage());
-        } catch (ClienteAlreadyExistsException | CuentaAlreadyExistsException e) {
-            throw new RuntimeException(e);
+        } finally {
+            clearScreen();
         }
-        clearScreen();
     }
 }

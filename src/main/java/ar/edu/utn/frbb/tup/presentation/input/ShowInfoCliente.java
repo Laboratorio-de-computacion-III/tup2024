@@ -32,13 +32,13 @@ public class ShowInfoCliente {
         System.out.println("Fecha de nacimiento: " + cliente.getFechaNacimiento());
         System.out.println("Edad: " + cliente.getEdad());
 
-        if(cliente.getListaCuentas().isEmpty()) {
+        if(cliente.getCuentas().isEmpty()) {
             System.out.println("El cliente no tiene cuentas asociadas.");
         } else {
             System.out.println("Cuentas del Cliente: ");
-            System.out.println(cliente.getListaCuentas());
-            for (long cuentaId : cliente.getListaCuentas()) {
-                System.out.println("Número de cuenta: " + cuentaId);
+            System.out.println(cliente.getCuentas());
+            for (Cuenta cuenta : cliente.getCuentas()) {
+                System.out.println("Número de cuenta: " + cuenta.toString());
             }
         }
 

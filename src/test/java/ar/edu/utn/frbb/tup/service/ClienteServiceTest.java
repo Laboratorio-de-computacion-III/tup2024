@@ -50,7 +50,7 @@ public class ClienteServiceTest {
         cliente.setTipoPersona(TipoPersona.PERSONA_FISICA);
         clienteService.darDeAltaCliente(cliente);
 
-        verify(clienteDao, times(1)).save(any(Cliente.class));
+        verify(clienteDao, times(1)).save(cliente);
     }
 
     @Test
@@ -69,7 +69,6 @@ public class ClienteServiceTest {
 
 
 
-    //Completar este test unitario
     @Test
     public void testAgregarCuentaAClienteSuccess() throws TipoCuentaAlreadyExistsException {
         Cliente pepeRino = new Cliente();
@@ -84,14 +83,48 @@ public class ClienteServiceTest {
                 .setBalance(500000)
                 .setTipoCuenta(TipoCuenta.CAJA_AHORRO);
 
+        when(clienteDao.find(26456439, true)).thenReturn(pepeRino);
+
         clienteService.agregarCuenta(cuenta, pepeRino.getDni());
+
+        verify(clienteDao, times(1)).save(pepeRino);
 
         assertEquals(1, pepeRino.getCuentas().size());
         assertEquals(pepeRino, cuenta.getTitular());
+
     }
 
 
-    //Agregar una CA$ y agregar otra cuenta con mismo tipo y moneda --> fallar (assertThrows)
+    @Test
+    public void testAgregarCuentaAClienteDuplicada() throws TipoCuentaAlreadyExistsException {
+        Cliente luciano = new Cliente();
+        luciano.setDni(26456439);
+        luciano.setNombre("Pepe");
+        luciano.setApellido("Rino");
+        luciano.setFechaNacimiento(LocalDate.of(1978, 3,25));
+        luciano.setTipoPersona(TipoPersona.PERSONA_FISICA);
+
+        Cuenta cuenta = new Cuenta()
+                .setMoneda(TipoMoneda.PESOS)
+                .setBalance(500000)
+                .setTipoCuenta(TipoCuenta.CAJA_AHORRO);
+
+        when(clienteDao.find(26456439, true)).thenReturn(luciano);
+
+        clienteService.agregarCuenta(cuenta, luciano.getDni());
+
+        Cuenta cuenta2 = new Cuenta()
+                .setMoneda(TipoMoneda.PESOS)
+                .setBalance(500000)
+                .setTipoCuenta(TipoCuenta.CAJA_AHORRO);
+
+        assertThrows(TipoCuentaAlreadyExistsException.class, () -> clienteService.agregarCuenta(cuenta2, luciano.getDni()));
+        verify(clienteDao, times(1)).save(luciano);
+        assertEquals(1, luciano.getCuentas().size());
+        assertEquals(luciano, cuenta.getTitular());
+
+    }
+
     //Agregar una CA$ y CC$ --> success 2 cuentas, titular peperino
     //Agregar una CA$ y CAU$S --> success 2 cuentas, titular peperino...
     //Testear clienteService.buscarPorDni

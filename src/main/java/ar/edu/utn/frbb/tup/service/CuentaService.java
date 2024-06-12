@@ -23,7 +23,7 @@ public class CuentaService {
     //    3 - cliente ya tiene cuenta de ese tipo
     //    4 - cuenta creada exitosamente
     public void darDeAltaCuenta(Cuenta cuenta, long dniTitular) throws CuentaAlreadyExistsException, TipoCuentaAlreadyExistsException {
-        if(cuentaDao.find(cuenta.getNumeroCuenta()) == null) {
+        if(cuentaDao.find(cuenta.getNumeroCuenta()) != null) {
             throw new CuentaAlreadyExistsException("La cuenta " + cuenta.getNumeroCuenta() + " ya existe.");
         }
 

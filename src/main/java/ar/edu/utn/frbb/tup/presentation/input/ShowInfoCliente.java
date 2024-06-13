@@ -5,10 +5,6 @@ import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.service.ClienteService;
 import org.springframework.stereotype.Component;
 
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @Component
 public class ShowInfoCliente {

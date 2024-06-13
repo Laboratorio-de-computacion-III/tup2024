@@ -3,8 +3,6 @@ package ar.edu.utn.frbb.tup.persistence.entity;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.TipoPersona;
-import ar.edu.utn.frbb.tup.persistence.CuentaDao;
-import ar.edu.utn.frbb.tup.persistence.entity.BaseEntity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

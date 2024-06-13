@@ -5,7 +5,6 @@ import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.exception.ClienteAlreadyExistsException;
 import ar.edu.utn.frbb.tup.model.exception.TipoCuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.persistence.ClienteDao;
-import ar.edu.utn.frbb.tup.persistence.CuentaDao;
 import org.springframework.stereotype.Service;
 
 @Service

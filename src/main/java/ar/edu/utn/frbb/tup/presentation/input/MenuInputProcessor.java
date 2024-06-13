@@ -1,11 +1,9 @@
 package ar.edu.utn.frbb.tup.presentation.input;
 
-import ar.edu.utn.frbb.tup.model.Banco;
-import ar.edu.utn.frbb.tup.model.Cliente;
-import ar.edu.utn.frbb.tup.model.Cuenta;
-import org.springframework.beans.factory.annotation.Autowired;
+import ar.edu.utn.frbb.tup.model.exception.TipoCuentaAlreadyExistsException;
+import ar.edu.utn.frbb.tup.model.exception.TipoCuentaNotSupportedException;
+
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class MenuInputProcessor extends BaseInputProcessor{
@@ -17,13 +15,13 @@ public class MenuInputProcessor extends BaseInputProcessor{
 
     boolean exit = false;
 
-    public MenuInputProcessor(ClienteInputProcessor clienteInputProcessor, CuentaInputProcessor cuentaInputProcessor, ShowInfoCliente showInfoCliente) {
+    public MenuInputProcessor(ClienteInputProcessor clienteInputProcessor, CuentaInputProcessor cuentaInputProcessor, ShowInfoCliente showInfoCliente){
         this.clienteInputProcessor = clienteInputProcessor;
         this.cuentaInputProcessor = cuentaInputProcessor;
         this.showInfoCliente = showInfoCliente;
     }
 
-    public void renderMenu() {
+    public void renderMenu() throws TipoCuentaAlreadyExistsException, TipoCuentaNotSupportedException {
 
         while (!exit) {
             System.out.println("Bienveido a la aplicación de Banco!");

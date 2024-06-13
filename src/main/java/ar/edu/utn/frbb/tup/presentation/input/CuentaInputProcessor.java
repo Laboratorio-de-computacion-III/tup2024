@@ -1,12 +1,11 @@
 package ar.edu.utn.frbb.tup.presentation.input;
 
-import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.TipoCuenta;
 import ar.edu.utn.frbb.tup.model.TipoMoneda;
-import ar.edu.utn.frbb.tup.model.exception.ClienteAlreadyExistsException;
 import ar.edu.utn.frbb.tup.model.exception.CuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.model.exception.TipoCuentaAlreadyExistsException;
+import ar.edu.utn.frbb.tup.model.exception.TipoCuentaNotSupportedException;
 import ar.edu.utn.frbb.tup.persistence.CuentaDao;
 import ar.edu.utn.frbb.tup.service.ClienteService;
 import ar.edu.utn.frbb.tup.service.CuentaService;
@@ -26,7 +25,7 @@ public class CuentaInputProcessor extends BaseInputProcessor{
         this.clienteService = clienteService;
     }
 
-    public void altaCuenta() {
+    public void altaCuenta() throws TipoCuentaAlreadyExistsException, TipoCuentaNotSupportedException {
         Cuenta cuenta = new Cuenta();
         clearScreen();
 

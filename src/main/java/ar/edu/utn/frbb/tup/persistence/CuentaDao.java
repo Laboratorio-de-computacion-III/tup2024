@@ -1,11 +1,11 @@
 package ar.edu.utn.frbb.tup.persistence;
 
 import ar.edu.utn.frbb.tup.model.Cuenta;
+import ar.edu.utn.frbb.tup.model.exception.AccountNotSupportedExcepcion;
 import ar.edu.utn.frbb.tup.persistence.entity.ClienteEntity;
 import ar.edu.utn.frbb.tup.persistence.entity.CuentaEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class CuentaDao  extends AbstractBaseDao{
     @Override
@@ -35,5 +35,14 @@ public class CuentaDao  extends AbstractBaseDao{
             }
         }
         return cuentasDelCliente;
+    }
+
+
+    public static final String[] CUENTAS_SOPORTADAS = new String[] {"CA$","CC$","CAU$S"};
+    public static final Set<String> CONJUNTO_CUENTAS_SOPORTADAS = new HashSet<>(Arrays.asList(CUENTAS_SOPORTADAS));
+    public boolean tipoDeCuentaSoportada(Cuenta cuenta) throws AccountNotSupportedExcepcion {
+        if (CONJUNTO_CUENTAS_SOPORTADAS.contains(cuenta.getTipoCuenta().toString()))
+            return true;
+        throw  new AccountNotSupportedExcepcion("cuenta no soportada");
     }
 }

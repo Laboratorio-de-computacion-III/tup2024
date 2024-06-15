@@ -2,6 +2,7 @@ package ar.edu.utn.frbb.tup.presentation.input;
 
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
+import ar.edu.utn.frbb.tup.model.exception.ClienteNotFoundException;
 import ar.edu.utn.frbb.tup.service.ClienteService;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,7 @@ public class ShowInfoCliente {
         this.clienteService = clienteService;
     }
 
-    public void mostrarInfoCliente(long dni) {
+    public void mostrarInfoCliente(long dni) throws ClienteNotFoundException {
         Cliente cliente = clienteService.buscarClientePorDni(dni);
 
         if (cliente == null) {

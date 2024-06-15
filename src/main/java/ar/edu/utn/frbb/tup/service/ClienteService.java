@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.service;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.exception.ClienteAlreadyExistsException;
+import ar.edu.utn.frbb.tup.model.exception.ClienteNotFoundException;
 import ar.edu.utn.frbb.tup.model.exception.TipoCuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import ar.edu.utn.frbb.tup.persistence.CuentaDao;
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClienteService {
 
-    ClienteDao clienteDao;
+
+    private ClienteDao clienteDao;
 
     public ClienteService(ClienteDao clienteDao) {
         this.clienteDao = clienteDao;
@@ -35,20 +37,25 @@ public class ClienteService {
         clienteDao.save(cliente);
     }
 
-    public void agregarCuenta(Cuenta cuenta, long dniTitular) throws TipoCuentaAlreadyExistsException {
+    public void agregarCuenta(Cuenta cuenta, long dniTitular) throws TipoCuentaAlreadyExistsException, ClienteNotFoundException {
         Cliente titular = buscarClientePorDni(dniTitular);
-        cuenta.setTitular(titular);
-        if (titular.tieneCuenta(cuenta.getTipoCuenta(), cuenta.getMoneda())) {
-            throw new TipoCuentaAlreadyExistsException("El cliente ya posee una cuenta de ese tipo y moneda");
-        }
+        tieneCuenta(cuenta, titular);
         titular.addCuenta(cuenta);
+        cuenta.setTitular(titular);
         clienteDao.save(titular);
     }
 
-    public Cliente buscarClientePorDni(long dni) {
+    public void tieneCuenta(Cuenta cuenta, Cliente titular) throws TipoCuentaAlreadyExistsException {
+        if (titular.tieneCuenta(cuenta.getTipoCuenta(), cuenta.getMoneda())) {
+            throw new TipoCuentaAlreadyExistsException("El cliente ya posee una cuenta de ese tipo y moneda");
+        }
+
+    }
+
+    public Cliente buscarClientePorDni(long dni) throws  ClienteNotFoundException {
         Cliente cliente = clienteDao.find(dni, true);
         if(cliente == null) {
-            throw new IllegalArgumentException("El cliente no existe");
+            throw new ClienteNotFoundException("El cliente no existe");
         }
         return cliente;
     }

@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.service;
 
+import ar.edu.utn.frbb.tup.controller.CuentaDto;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.exception.CuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.model.exception.TipoCuentaAlreadyExistsException;
@@ -22,16 +23,15 @@ public class CuentaService {
     //    2 - cuenta no soportada
     //    3 - cliente ya tiene cuenta de ese tipo
     //    4 - cuenta creada exitosamente
-    public void darDeAltaCuenta(Cuenta cuenta, long dniTitular) throws CuentaAlreadyExistsException, TipoCuentaAlreadyExistsException {
-        if(cuentaDao.find(cuenta.getNumeroCuenta()) != null) {
-            throw new CuentaAlreadyExistsException("La cuenta " + cuenta.getNumeroCuenta() + " ya existe.");
-        }
-
+    public Cuenta darDeAltaCuenta(CuentaDto cuentaDto) throws TipoCuentaAlreadyExistsException {
         //Chequear cuentas soportadas por el banco CA$ CC$ CAU$S
         // if (!tipoCuentaEstaSoportada(cuenta)) {...}
+        Cuenta cuenta = new Cuenta(cuentaDto);
 
-        clienteService.agregarCuenta(cuenta, dniTitular);
+        clienteService.agregarCuenta(cuenta, cuentaDto.getDniTitular());
         cuentaDao.save(cuenta);
+        
+        return cuenta;
     }
 
     public Cuenta find(long id) {

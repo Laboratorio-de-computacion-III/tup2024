@@ -20,6 +20,7 @@ public class Cliente extends Persona{
     }
     public Cliente(ClienteDto clienteDto) {
         super(clienteDto.getDni(), clienteDto.getApellido(), clienteDto.getNombre(), clienteDto.getFechaNacimiento());
+        this.tipoPersona = TipoPersona.valueOf(clienteDto.getTipoPersona());
         fechaAlta = LocalDate.now();
         banco = clienteDto.getBanco();
     }

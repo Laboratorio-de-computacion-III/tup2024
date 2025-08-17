@@ -1,5 +1,7 @@
 package ar.edu.utn.frbb.tup.persistence;
 
+import java.util.List;
+
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.persistence.entity.ClienteEntity;
@@ -24,6 +26,12 @@ public class ClienteDao extends AbstractBaseDao{
         }
         return cliente;
 
+    }
+
+    public List <Cliente> findAll() {
+        return getInMemoryDatabase().values().stream()
+                .map(entity -> ((ClienteEntity) entity).toCliente())
+                .toList();
     }
 
     public void save(Cliente cliente) {

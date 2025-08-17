@@ -10,7 +10,7 @@ public class ClienteValidator {
 
 
     public void validate(ClienteDto clienteDto) {
-        if (!"F".equals(clienteDto.getTipoPersona()) || !"J".equals(clienteDto.getTipoPersona())) {
+        if (!"F".equals(clienteDto.getTipoPersona()) && !"J".equals(clienteDto.getTipoPersona())) {
             throw new IllegalArgumentException("El tipo de persona no es correcto");
         }
         try {

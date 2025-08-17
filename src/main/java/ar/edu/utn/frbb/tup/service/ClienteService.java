@@ -1,5 +1,7 @@
 package ar.edu.utn.frbb.tup.service;
 
+import java.util.List;
+
 import ar.edu.utn.frbb.tup.controller.ClienteDto;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
@@ -48,5 +50,9 @@ public class ClienteService {
             throw new IllegalArgumentException("El cliente no existe");
         }
         return cliente;
+    }
+
+    public List<Cliente> obtenerClientes() {
+        return clienteDao.findAll();
     }
 }

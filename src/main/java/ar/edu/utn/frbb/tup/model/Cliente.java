@@ -8,20 +8,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Cliente extends Persona{
+public class Cliente extends Persona {
 
     private TipoPersona tipoPersona;
     private String banco;
     private LocalDate fechaAlta;
-    private Set<Cuenta> cuentas = new HashSet<>();
+    private final Set<Cuenta> cuentas = new HashSet<>();
 
     public Cliente() {
         super();
     }
+
     public Cliente(ClienteDto clienteDto) {
         super(clienteDto.getDni(), clienteDto.getApellido(), clienteDto.getNombre(), clienteDto.getFechaNacimiento());
         fechaAlta = LocalDate.now();
         banco = clienteDto.getBanco();
+        tipoPersona = (TipoPersona.fromString(clienteDto.getTipoPersona()));
     }
 
     public TipoPersona getTipoPersona() {
@@ -58,7 +60,7 @@ public class Cliente extends Persona{
     }
 
     public boolean tieneCuenta(TipoCuenta tipoCuenta, TipoMoneda moneda) {
-        for (Cuenta cuenta:
+        for (Cuenta cuenta :
                 cuentas) {
             if (tipoCuenta.equals(cuenta.getTipoCuenta()) && moneda.equals(cuenta.getMoneda())) {
                 return true;

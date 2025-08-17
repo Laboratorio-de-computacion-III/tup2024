@@ -1,5 +1,7 @@
 package ar.edu.utn.frbb.tup.controller.handler;
 
+import ar.edu.utn.frbb.tup.model.exception.CreditoRechazadoException;
+import ar.edu.utn.frbb.tup.model.exception.PrestamoException;
 import ar.edu.utn.frbb.tup.model.exception.TipoCuentaAlreadyExistsException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,7 +49,21 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
             body = error;
         }
 
-        return new ResponseEntity(body, headers, status);
+        return new ResponseEntity<>(body, headers, status);
     }
 
+    @ExceptionHandler(value = {PrestamoException.class, CreditoRechazadoException.class})
+    protected ResponseEntity<Object> handlePrestamoException(
+            Exception ex, WebRequest request) {
+        String exceptionMessage = ex.getMessage();
+        CustomApiError error = new CustomApiError();
+        error.setErrorMessage(exceptionMessage);
+
+        HttpStatus status = ex instanceof CreditoRechazadoException
+                ? HttpStatus.FORBIDDEN
+                : HttpStatus.BAD_REQUEST;
+
+        return handleExceptionInternal(ex, error,
+                new HttpHeaders(), status, request);
+    }
 }

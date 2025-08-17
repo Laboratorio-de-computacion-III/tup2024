@@ -37,4 +37,9 @@ public class CuentaService {
     public Cuenta find(long id) {
         return cuentaDao.find(id);
     }
+
+    public void actualizarCuenta(Cuenta cuenta) {
+        cuentaDao.save(cuenta);
+    }
+
 }

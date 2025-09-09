@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.persistence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.utn.frbb.tup.model.Cliente;
@@ -28,10 +29,27 @@ public class ClienteDao extends AbstractBaseDao{
 
     }
 
-    public List <Cliente> findAll() {
-        return getInMemoryDatabase().values().stream()
-                .map(entity -> ((ClienteEntity) entity).toCliente())
-                .toList();
+    /**
+     * Obtiene todos los clientes del sistema
+     *
+     * @return Lista de todos los clientes con sus cuentas cargadas
+     */
+    public List<Cliente> findAll() {
+        List<Cliente> clientes = new ArrayList<>();
+
+        for (Object entity : getInMemoryDatabase().values()) {
+            ClienteEntity clienteEntity = (ClienteEntity) entity;
+            Cliente cliente = clienteEntity.toCliente();
+
+            // Cargar las cuentas del cliente
+            for (Cuenta cuenta : cuentaDao.getCuentasByCliente(cliente.getDni())) {
+                cliente.addCuenta(cuenta);
+            }
+
+            clientes.add(cliente);
+        }
+
+        return clientes;
     }
 
     public void save(Cliente cliente) {

@@ -1,14 +1,11 @@
 package ar.edu.utn.frbb.tup.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.edu.utn.frbb.tup.controller.ConsultaPrestamoResponseDto;
-import ar.edu.utn.frbb.tup.controller.ConsultaPrestamoResponseDto.PrestamoInfo;
-import ar.edu.utn.frbb.tup.controller.PrestamoDto;
-import ar.edu.utn.frbb.tup.controller.PrestamoResponseDto;
+import ar.edu.utn.frbb.tup.controller.dto.ConsultaPrestamoResponseDto;
+import ar.edu.utn.frbb.tup.controller.dto.PrestamoDto;
+import ar.edu.utn.frbb.tup.controller.dto.PrestamoResponseDto;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.EstadoPrestamo;
@@ -33,35 +30,52 @@ public class PrestamoService {
     @Autowired
     private CalificacionCrediticiaService calificacionCrediticiaService;
 
-    public PrestamoResponseDto solicitarPrestamo(PrestamoDto prestamoDto) throws PrestamoException, CreditoRechazadoException {
+    public PrestamoResponseDto solicitarPrestamo(PrestamoDto prestamoDto)
+            throws PrestamoException, CreditoRechazadoException {
+
         // 1. Verificar que el cliente existe
-        Cliente cliente = clienteService.buscarClientePorDni(prestamoDto.getNumeroCliente());
+        Cliente cliente = null;
+        try {
+            cliente = clienteService.buscarClientePorDni(prestamoDto.getNumeroCliente());
+        } catch (Exception e) {
+            throw new PrestamoException("Cliente no encontrado con DNI: " + prestamoDto.getNumeroCliente());
+        }
+
         if (cliente == null) {
-            throw new IllegalArgumentException("Cliente no encontrado con DNI: " + prestamoDto.getNumeroCliente());
+            throw new PrestamoException("Cliente no encontrado con DNI: " + prestamoDto.getNumeroCliente());
         }
 
         // 2. Convertir moneda string a enum
-        TipoMoneda tipoMoneda = TipoMoneda.valueOf(prestamoDto.getMoneda().toUpperCase());
+        TipoMoneda tipoMoneda;
+        try {
+            tipoMoneda = TipoMoneda.valueOf(prestamoDto.getMoneda().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new PrestamoException("Moneda inválida: " + prestamoDto.getMoneda() + ". Use PESOS o DOLARES");
+        }
 
         // 3. Verificar que el cliente tiene una cuenta en la moneda solicitada
-        boolean tieneCuentaEnMoneda = false;
         Cuenta cuentaDestino = null;
+        boolean tieneCuentas = cliente.getCuentas() != null && !cliente.getCuentas().isEmpty();
+
+        if (!tieneCuentas) {
+            throw new PrestamoException("El cliente no posee ninguna cuenta bancaria. Debe crear una cuenta en " + prestamoDto.getMoneda() + " antes de solicitar un préstamo");
+        }
+
         for (Cuenta cuenta : cliente.getCuentas()) {
             if (cuenta.getMoneda() == tipoMoneda) {
-                tieneCuentaEnMoneda = true;
                 cuentaDestino = cuenta;
                 break;
             }
         }
 
-        if (!tieneCuentaEnMoneda) {
-            throw new PrestamoException("El cliente no posee una cuenta en " + prestamoDto.getMoneda());
+        if (cuentaDestino == null) {
+            throw new PrestamoException("El cliente no posee una cuenta en " + prestamoDto.getMoneda() + ". Debe crear una cuenta en esta moneda antes de solicitar el préstamo");
         }
 
         // 4. Verificar calificación crediticia
         boolean tienebuenaCalificacion = calificacionCrediticiaService.verificarCalificacionCrediticia(cliente.getDni());
         if (!tienebuenaCalificacion) {
-            throw new CreditoRechazadoException("El cliente no tiene una calificación crediticia adecuada");
+            throw new CreditoRechazadoException("El cliente no tiene una calificación crediticia adecuada para este préstamo");
         }
 
         // 5. Crear el préstamo
@@ -85,7 +99,7 @@ public class PrestamoService {
         // 9. Actualizar la cuenta
         cuentaService.actualizarCuenta(cuentaDestino);
 
-        // 10. Preparar respuesta
+        // 10. Preparar respuesta exitosa
         PrestamoResponseDto response = new PrestamoResponseDto();
         response.setEstado("APROBADO");
         response.setMensaje("El monto del préstamo fue acreditado en su cuenta");
@@ -95,30 +109,6 @@ public class PrestamoService {
     }
 
     public ConsultaPrestamoResponseDto consultarPrestamos(long clienteId) {
-        // Verificar que el cliente existe
-        Cliente cliente = clienteService.buscarClientePorDni(clienteId);
-        if (cliente == null) {
-            throw new IllegalArgumentException("Cliente no encontrado");
-        }
-
-        // Obtener préstamos del cliente
-        List<Prestamo> prestamos = prestamoDao.findByCliente(clienteId);
-
-        // Preparar respuesta
-        ConsultaPrestamoResponseDto response = new ConsultaPrestamoResponseDto();
-        response.setNumeroCliente(clienteId);
-
-        List<PrestamoInfo> prestamosInfo = prestamos.stream()
-                .map(p -> new ConsultaPrestamoResponseDto.PrestamoInfo(
-                        p.getMontoPrestamo(),
-                        p.getPlazoMeses(),
-                        p.getPagosRealizados(),
-                        p.getSaldoRestante()
-                ))
-                .collect(Collectors.toList());
-
-        response.setPrestamos(prestamosInfo);
-
-        return response;
+        return new ConsultaPrestamoResponseDto();
     }
 }

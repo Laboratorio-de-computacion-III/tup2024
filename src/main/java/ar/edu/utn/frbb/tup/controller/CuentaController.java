@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.edu.utn.frbb.tup.controller.dto.CuentaDto;
+import ar.edu.utn.frbb.tup.controller.validator.CuentaValidator;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.exception.CuentaAlreadyExistsException;
@@ -24,17 +26,25 @@ public class CuentaController {
 
     @Autowired
     private CuentaService cuentaService;
+
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private CuentaValidator cuentaValidator;
 
     @PostMapping
     public Cuenta crearCuenta(@RequestBody CuentaDto cuentaDto)
             throws TipoCuentaAlreadyExistsException, CuentaAlreadyExistsException {
 
+        // Validar datos de entrada
+        cuentaValidator.validate(cuentaDto);
+
         Cliente cliente = clienteService.buscarClientePorDni(cuentaDto.getNumeroCliente());
         Cuenta cuenta = new Cuenta();
         cuenta.setTipoCuenta(cuentaDto.getTipoCuenta());
-        cuentaService.darDeAltaCuenta(cuenta,cuentaDto.getNumeroCliente());
+        cuenta.setMoneda(cuentaDto.getMoneda()); // LÍNEA AGREGADA
+        cuentaService.darDeAltaCuenta(cuenta, cuentaDto.getNumeroCliente());
         cuenta.setTitular(cliente);
 
         return cuenta;

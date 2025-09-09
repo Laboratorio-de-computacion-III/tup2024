@@ -3,11 +3,17 @@ package ar.edu.utn.frbb.tup.model;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import ar.edu.utn.frbb.tup.model.exception.CantidadNegativaException;
+import ar.edu.utn.frbb.tup.model.exception.NoAlcanzaException;
+
 public class Cuenta {
     private long numeroCuenta;
     LocalDateTime fechaCreacion;
     int balance;
     TipoCuenta tipoCuenta;
+    @JsonBackReference
     Cliente titular;
     TipoMoneda moneda;
 

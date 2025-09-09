@@ -1,6 +1,6 @@
 package ar.edu.utn.frbb.tup.controller.validator;
 
-import ar.edu.utn.frbb.tup.controller.ClienteDto;
+import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

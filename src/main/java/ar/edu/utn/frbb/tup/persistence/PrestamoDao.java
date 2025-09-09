@@ -16,16 +16,27 @@ public class PrestamoDao extends AbstractBaseDao {
         return "PRESTAMO";
     }
 
+    /**
+     * Guarda un préstamo en la base de datos en memoria
+     *
+     * @param prestamo Préstamo a guardar
+     */
     public void save(Prestamo prestamo) {
         // Generar ID si no tiene
         if (prestamo.getId() == null) {
-            prestamo.setId(new Random().nextLong());
+            prestamo.setId(Math.abs(new Random().nextLong()));
         }
 
         PrestamoEntity entity = new PrestamoEntity(prestamo);
         getInMemoryDatabase().put(entity.getId(), entity);
     }
 
+    /**
+     * Busca un préstamo por ID
+     *
+     * @param id ID del préstamo
+     * @return Prestamo encontrado o null si no existe
+     */
     public Prestamo find(long id) {
         if (getInMemoryDatabase().get(id) == null) {
             return null;
@@ -33,6 +44,12 @@ public class PrestamoDao extends AbstractBaseDao {
         return ((PrestamoEntity) getInMemoryDatabase().get(id)).toPrestamo();
     }
 
+    /**
+     * Busca todos los préstamos de un cliente
+     *
+     * @param numeroCliente DNI del cliente
+     * @return Lista de préstamos del cliente
+     */
     public List<Prestamo> findByCliente(long numeroCliente) {
         List<Prestamo> prestamosDelCliente = new ArrayList<>();
         for (Object object : getInMemoryDatabase().values()) {

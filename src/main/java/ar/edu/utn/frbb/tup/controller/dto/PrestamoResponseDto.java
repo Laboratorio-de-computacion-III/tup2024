@@ -1,9 +1,8 @@
-package ar.edu.utn.frbb.tup.controller;
+package ar.edu.utn.frbb.tup.controller.dto;
 
 import java.util.List;
 
 public class PrestamoResponseDto {
-
     private String estado;
     private String mensaje;
     private List<CuotaDto> planPagos;
@@ -18,6 +17,20 @@ public class PrestamoResponseDto {
         this.planPagos = planPagos;
     }
 
+    // Getters que faltaban
+    public String getEstado() {
+        return estado;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public List<CuotaDto> getPlanPagos() {
+        return planPagos;
+    }
+
+    // Setters
     public void setEstado(String estado) {
         this.estado = estado;
     }
@@ -28,9 +41,5 @@ public class PrestamoResponseDto {
 
     public void setPlanPagos(List<CuotaDto> planPagos) {
         this.planPagos = planPagos;
-    }
-
-    public List<CuotaDto> getPlanPagos() {
-        return planPagos;
     }
 }

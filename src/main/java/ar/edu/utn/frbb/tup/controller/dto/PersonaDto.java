@@ -1,8 +1,4 @@
-package ar.edu.utn.frbb.tup.controller;
-
-import ar.edu.utn.frbb.tup.model.TipoPersona;
-
-import java.time.LocalDate;
+package ar.edu.utn.frbb.tup.controller.dto;
 
 public class PersonaDto {
     private String nombre;

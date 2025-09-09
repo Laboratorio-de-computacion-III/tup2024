@@ -5,4 +5,3 @@ public class PrestamoException extends Exception {
         super(message);
     }
 }
-

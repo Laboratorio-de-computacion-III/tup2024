@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.controller;
+package ar.edu.utn.frbb.tup.controller.dto;
 
 import java.util.List;
 

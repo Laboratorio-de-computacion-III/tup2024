@@ -3,23 +3,22 @@ package ar.edu.utn.frbb.tup.persistence.entity;
 import java.time.LocalDate;
 import java.util.List;
 
-import ar.edu.utn.frbb.tup.controller.CuotaDto;
+import ar.edu.utn.frbb.tup.controller.dto.CuotaDto;
 import ar.edu.utn.frbb.tup.model.EstadoPrestamo;
-import ar.edu.utn.frbb.tup.model.PlanPago;
 import ar.edu.utn.frbb.tup.model.Prestamo;
 import ar.edu.utn.frbb.tup.model.TipoMoneda;
 
 public class PrestamoEntity extends BaseEntity {
-    private final long numeroCliente;
-    private final double montoPrestamo;
-    private final double montoConIntereses;
-    private final int plazoMeses;
-    private final String moneda;
-    private final LocalDate fechaSolicitud;
-    private final String estado;
-    private final int pagosRealizados;
-    private final double saldoRestante;
-    private final List<CuotaDto> planPagos;
+    private long numeroCliente;
+    private double montoPrestamo;
+    private double montoConIntereses;
+    private int plazoMeses;
+    private String moneda;
+    private LocalDate fechaSolicitud;
+    private String estado;
+    private int pagosRealizados;
+    private double saldoRestante;
+    private List<CuotaDto> planPagos;
 
     public PrestamoEntity(Prestamo prestamo) {
         super(prestamo.getId());
@@ -51,7 +50,10 @@ public class PrestamoEntity extends BaseEntity {
         return prestamo;
     }
 
-    // Getters
-    public long getNumeroCliente() { return numeroCliente; }
+    // Getter necesario para el DAO
+    public long getNumeroCliente() {
+        return numeroCliente;
+    }
 }
+
 

@@ -2,7 +2,7 @@ package ar.edu.utn.frbb.tup.service;
 
 import java.util.List;
 
-import ar.edu.utn.frbb.tup.controller.ClienteDto;
+import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.exception.ClienteAlreadyExistsException;
@@ -52,6 +52,11 @@ public class ClienteService {
         return cliente;
     }
 
+    /**
+     * Obtiene todos los clientes del sistema con sus cuentas cargadas
+     *
+     * @return Lista de todos los clientes
+     */
     public List<Cliente> obtenerClientes() {
         return clienteDao.findAll();
     }

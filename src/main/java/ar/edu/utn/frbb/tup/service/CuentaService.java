@@ -32,14 +32,21 @@ public class CuentaService {
 
         clienteService.agregarCuenta(cuenta, dniTitular);
         cuentaDao.save(cuenta);
+        System.out.println(cuenta);
     }
 
     public Cuenta find(long id) {
         return cuentaDao.find(id);
     }
 
+    /**
+     * Actualiza una cuenta existente en la base de datos
+     *
+     * @param cuenta Cuenta a actualizar
+     */
     public void actualizarCuenta(Cuenta cuenta) {
         cuentaDao.save(cuenta);
     }
+
 
 }

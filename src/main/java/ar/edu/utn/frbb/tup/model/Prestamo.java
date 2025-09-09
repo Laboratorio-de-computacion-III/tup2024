@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.utn.frbb.tup.controller.CuotaDto;
+import ar.edu.utn.frbb.tup.controller.dto.CuotaDto;
 
 public class Prestamo {
     private Long id;
@@ -27,17 +27,25 @@ public class Prestamo {
         this.estado = EstadoPrestamo.PENDIENTE;
     }
 
-    // Método para calcular el plan de pagos
+    /**
+     * Calcula el plan de pagos con interés fijo del 5% anual
+     * Todas las cuotas tienen el mismo valor
+     */
     public void calcularPlanPagos() {
-        double tasaMensual = INTERES_ANUAL / 12;
-        double montoTotal = montoPrestamo * (1 + (INTERES_ANUAL * plazoMeses / 12));
+        // Calcular el interés total
+        double tasaAnual = INTERES_ANUAL;
+        double anios = plazoMeses / 12.0;
+        double montoTotal = montoPrestamo * (1 + (tasaAnual * anios));
+
         this.montoConIntereses = montoTotal;
         this.saldoRestante = montoTotal;
 
+        // Calcular cuota mensual (todas iguales)
         double cuotaMensual = montoTotal / plazoMeses;
 
+        // Generar plan de pagos
         for (int i = 1; i <= plazoMeses; i++) {
-            CuotaDto cuota = new CuotaDto(i, cuotaMensual);
+            CuotaDto cuota = new CuotaDto(i, Math.round(cuotaMensual * 100.0) / 100.0);
             planPagos.add(cuota);
         }
     }

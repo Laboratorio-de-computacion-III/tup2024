@@ -1,19 +1,40 @@
 package ar.edu.utn.frbb.tup.model;
 
 import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import org.hibernate.annotations.CascadeType;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+@Entity
+@Table(name = "clientes")
 public class Cliente extends Persona {
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_persona", nullable = false, length = 20)
     private TipoPersona tipoPersona;
+
+    @Column(name = "banco", length = 100)
     private String banco;
+
+    @Column(name = "fecha_alta", nullable = false)
     private LocalDate fechaAlta;
+
+    @OneToMany(mappedBy = "titular")
     @JsonManagedReference
     private Set<Cuenta> cuentas;
+
+    @OneToMany(mappedBy = "numeroCliente")
+    private Set<Prestamo> prestamos;
+
 
     public Cliente() {
         super();

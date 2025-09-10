@@ -3,11 +3,11 @@ package ar.edu.utn.frbb.tup.controller.dto;
 import java.util.List;
 
 public class PrestamoResponseDto {
+
     private String estado;
     private String mensaje;
     private List<CuotaDto> planPagos;
 
-    // Constructores
     public PrestamoResponseDto() {
     }
 
@@ -17,7 +17,6 @@ public class PrestamoResponseDto {
         this.planPagos = planPagos;
     }
 
-    // Getters que faltaban
     public String getEstado() {
         return estado;
     }
@@ -30,7 +29,6 @@ public class PrestamoResponseDto {
         return planPagos;
     }
 
-    // Setters
     public void setEstado(String estado) {
         this.estado = estado;
     }

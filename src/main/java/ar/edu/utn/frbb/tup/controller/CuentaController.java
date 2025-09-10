@@ -37,7 +37,6 @@ public class CuentaController {
     public Cuenta crearCuenta(@RequestBody CuentaDto cuentaDto)
             throws TipoCuentaAlreadyExistsException, CuentaAlreadyExistsException {
 
-        // Validar datos de entrada
         cuentaValidator.validate(cuentaDto);
 
         Cliente cliente = clienteService.buscarClientePorDni(cuentaDto.getNumeroCliente());

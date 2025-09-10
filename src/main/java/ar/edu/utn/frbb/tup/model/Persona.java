@@ -3,11 +3,26 @@ package ar.edu.utn.frbb.tup.model;
 import java.time.LocalDate;
 import java.time.Period;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class Persona {
+
+    @Id
+    @Column(name = "dni", nullable = false, unique = true)
+    private Long dni;
+
+    @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
+
+    @Column(name = "apellido", nullable = false, length = 100)
     private String apellido;
-    private long dni;
+
+    @Column(name = "fecha_nacimiento", nullable = false)
     private LocalDate fechaNacimiento;
+
 
     public Persona() {}
     public Persona(long dni, String apellido, String nombre, String fechaNacimiento) {

@@ -24,7 +24,6 @@ public class CuentaDto {
         this.tipoCuenta = tipoCuenta;
     }
 
-    // Getters y setters para moneda que faltaban
     public TipoMoneda getMoneda() {
         return moneda;
     }

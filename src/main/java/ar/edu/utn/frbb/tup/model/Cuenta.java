@@ -7,30 +7,75 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import ar.edu.utn.frbb.tup.model.exception.CantidadNegativaException;
 import ar.edu.utn.frbb.tup.model.exception.NoAlcanzaException;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "cuentas")
 public class Cuenta {
-    private long numeroCuenta;
-    LocalDateTime fechaCreacion;
-    int balance;
-    TipoCuenta tipoCuenta;
+
+    @Id
+    @Column(name = "numero_cuenta", nullable = false, unique = true)
+    private Long numeroCuenta;
+
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "balance", nullable = false)
+    private Integer balance;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_cuenta", nullable = false, length = 20)
+    private TipoCuenta tipoCuenta;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "moneda", nullable = false, length = 10)
+    private TipoMoneda moneda;
+
     @JsonBackReference
-    Cliente titular;
-    TipoMoneda moneda;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dni_titular", nullable = false)
+    private Cliente titular;
 
     public Cuenta() {
-        this.numeroCuenta = new Random().nextLong();
+        this.numeroCuenta = Math.abs(new Random().nextLong());
         this.balance = 0;
         this.fechaCreacion = LocalDateTime.now();
     }
 
-    public Cliente getTitular() {
-        return titular;
+    // Getters y Setters
+    public Long getNumeroCuenta() {
+        return numeroCuenta;
     }
 
-    public void setTitular(Cliente titular) {
-        this.titular = titular;
+    public void setNumeroCuenta(Long numeroCuenta) {
+        this.numeroCuenta = numeroCuenta;
     }
 
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public Cuenta setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+        return this;
+    }
+
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public Cuenta setBalance(Integer balance) {
+        this.balance = balance;
+        return this;
+    }
 
     public TipoCuenta getTipoCuenta() {
         return tipoCuenta;
@@ -50,25 +95,15 @@ public class Cuenta {
         return this;
     }
 
-
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
+    public Cliente getTitular() {
+        return titular;
     }
 
-    public Cuenta setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-        return this;
+    public void setTitular(Cliente titular) {
+        this.titular = titular;
     }
 
-    public int getBalance() {
-        return balance;
-    }
-
-    public Cuenta setBalance(int balance) {
-        this.balance = balance;
-        return this;
-    }
-
+    // Métodos de negocio
     public void debitarDeCuenta(int cantidadADebitar) throws NoAlcanzaException, CantidadNegativaException {
         if (cantidadADebitar < 0) {
             throw new CantidadNegativaException();
@@ -80,17 +115,14 @@ public class Cuenta {
         this.balance = this.balance - cantidadADebitar;
     }
 
-    public void setNumeroCuenta(long numeroCuenta) {
-        this.numeroCuenta = numeroCuenta;
-    }
-
     public void forzaDebitoDeCuenta(int i) {
         this.balance = this.balance - i;
     }
 
-    public long getNumeroCuenta() {
-        return numeroCuenta;
+    @Override
+    public String toString() {
+        return "Cuenta{" + "numeroCuenta=" + numeroCuenta + ", fechaCreacion=" + fechaCreacion + ", balance=" + balance
+                + ", tipoCuenta=" + tipoCuenta + ", moneda=" + moneda + ", titular=" + (titular != null
+                ? titular.getDni() : "null") + '}';
     }
-
-
 }

@@ -9,16 +9,16 @@ import ar.edu.utn.frbb.tup.model.Prestamo;
 import ar.edu.utn.frbb.tup.model.TipoMoneda;
 
 public class PrestamoEntity extends BaseEntity {
-    private long numeroCliente;
-    private double montoPrestamo;
-    private double montoConIntereses;
-    private int plazoMeses;
-    private String moneda;
-    private LocalDate fechaSolicitud;
-    private String estado;
-    private int pagosRealizados;
-    private double saldoRestante;
-    private List<CuotaDto> planPagos;
+    private final long numeroCliente;
+    private final double montoPrestamo;
+    private final double montoConIntereses;
+    private final int plazoMeses;
+    private final String moneda;
+    private final LocalDate fechaSolicitud;
+    private final String estado;
+    private final int pagosRealizados;
+    private final double saldoRestante;
+    private final List<CuotaDto> planPagos;
 
     public PrestamoEntity(Prestamo prestamo) {
         super(prestamo.getId());

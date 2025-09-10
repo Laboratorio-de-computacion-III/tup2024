@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.controller.dto;
 
 public class ClienteDto extends PersonaDto {
+
     private String tipoPersona;
     private String banco;
 

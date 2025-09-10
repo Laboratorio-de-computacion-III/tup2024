@@ -1,17 +1,18 @@
 package ar.edu.utn.frbb.tup.controller.dto;
 
 public class CuotaDto {
+
     private int cuotaNro;
     private double monto;
 
-    public CuotaDto() {}
+    public CuotaDto() {
+    }
 
     public CuotaDto(int cuotaNro, double monto) {
         this.cuotaNro = cuotaNro;
         this.monto = monto;
     }
 
-    // Getters y Setters que faltan
     public int getCuotaNro() {
         return cuotaNro;
     }

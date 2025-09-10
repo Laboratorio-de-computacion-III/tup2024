@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,8 +93,8 @@ public class PrestamoService {
         prestamo.calcularPlanPagos();
 
         // 7. Acreditar el monto en la cuenta del cliente
-        int montoEnCentavos = (int)(prestamoDto.getMontoPrestamo() * 100);
-        cuentaDestino.setBalance(cuentaDestino.getBalance() + montoEnCentavos);
+        BigDecimal monto = prestamoDto.getMontoPrestamo();
+        cuentaDestino.setBalance(cuentaDestino.getBalance().add(monto));
 
         // 8. Guardar el préstamo y actualizar la cuenta
         prestamoRepository.save(prestamo);

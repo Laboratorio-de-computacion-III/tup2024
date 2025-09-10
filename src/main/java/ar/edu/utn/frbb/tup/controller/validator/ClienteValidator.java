@@ -9,7 +9,11 @@ import java.time.LocalDate;
 @Component
 public class ClienteValidator {
 
-
+    /**
+     * Valida los datos básicos del cliente
+     *
+     * @param clienteDto Datos del cliente a validar
+     */
     public void validate(ClienteDto clienteDto) {
         if (!"F".equals(clienteDto.getTipoPersona()) && !"J".equals(clienteDto.getTipoPersona())) {
             throw new IllegalArgumentException("El tipo de persona no es correcto");

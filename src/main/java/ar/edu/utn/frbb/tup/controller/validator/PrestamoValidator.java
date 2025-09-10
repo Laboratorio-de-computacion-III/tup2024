@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.controller.validator;
 
+import java.math.BigDecimal;
 import org.springframework.stereotype.Component;
 
 import ar.edu.utn.frbb.tup.controller.dto.PrestamoDto;
@@ -7,9 +8,14 @@ import ar.edu.utn.frbb.tup.controller.dto.PrestamoDto;
 @Component
 public class PrestamoValidator {
 
+    /**
+     * Valida los datos básicos del préstamo
+     *
+     * @param prestamoDto Datos del préstamo a validar
+     */
     public void validate(PrestamoDto prestamoDto) {
         // Validar monto del préstamo
-        if (prestamoDto.getMontoPrestamo() <= 0) {
+        if (prestamoDto.getMontoPrestamo().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("El monto del préstamo debe ser mayor a 0");
         }
 

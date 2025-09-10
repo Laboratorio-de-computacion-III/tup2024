@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.controller.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ConsultaPrestamoResponseDto {
@@ -9,61 +10,22 @@ public class ConsultaPrestamoResponseDto {
 
     public static class PrestamoInfo {
 
-        private double monto;
+        private BigDecimal monto;
         private int plazoMeses;
         private int pagosRealizados;
-        private double saldoRestante;
+        private BigDecimal saldoRestante;
 
-        public PrestamoInfo(double monto, int plazoMeses, int pagosRealizados, double saldoRestante) {
+        public PrestamoInfo(BigDecimal monto, int plazoMeses, int pagosRealizados, BigDecimal saldoRestante) {
             this.monto = monto;
             this.plazoMeses = plazoMeses;
             this.pagosRealizados = pagosRealizados;
             this.saldoRestante = saldoRestante;
         }
 
-        public double getMonto() {
-            return monto;
-        }
-
-        public void setMonto(double monto) {
-            this.monto = monto;
-        }
-
-        public int getPlazoMeses() {
-            return plazoMeses;
-        }
-
-        public void setPlazoMeses(int plazoMeses) {
-            this.plazoMeses = plazoMeses;
-        }
-
-        public int getPagosRealizados() {
-            return pagosRealizados;
-        }
-
-        public void setPagosRealizados(int pagosRealizados) {
-            this.pagosRealizados = pagosRealizados;
-        }
-
-        public double getSaldoRestante() {
-            return saldoRestante;
-        }
-
-        public void setSaldoRestante(double saldoRestante) {
-            this.saldoRestante = saldoRestante;
-        }
-    }
-
-    public long getNumeroCliente() {
-        return numeroCliente;
     }
 
     public void setNumeroCliente(long numeroCliente) {
         this.numeroCliente = numeroCliente;
-    }
-
-    public List<PrestamoInfo> getPrestamos() {
-        return prestamos;
     }
 
     public void setPrestamos(List<PrestamoInfo> prestamos) {

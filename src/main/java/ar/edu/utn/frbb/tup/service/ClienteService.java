@@ -1,17 +1,17 @@
 package ar.edu.utn.frbb.tup.service;
 
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.exception.ClienteAlreadyExistsException;
 import ar.edu.utn.frbb.tup.model.exception.TipoCuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.repository.ClienteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -22,6 +22,7 @@ public class ClienteService {
 
     /**
      * Da de alta un nuevo cliente en el sistema
+     *
      * @param clienteDto Datos del cliente a crear
      * @return Cliente creado
      * @throws ClienteAlreadyExistsException Si ya existe un cliente con ese DNI
@@ -45,13 +46,28 @@ public class ClienteService {
 
     /**
      * Agrega una cuenta a un cliente existente
+     *
      * @param cuenta Cuenta a agregar
      * @param dniTitular DNI del cliente titular
      * @throws TipoCuentaAlreadyExistsException Si el cliente ya tiene una cuenta de ese tipo y moneda
      */
+    public void agregarCuenta(Cuenta cuenta, long dniTitular) throws TipoCuentaAlreadyExistsException {
+        Optional<Cliente> clienteOpt = clienteRepository.findByDni(dniTitular);
+        if (!clienteOpt.isPresent()) {
+            throw new IllegalArgumentException("El cliente no existe");
+        }
+        Cliente cliente = clienteOpt.get();
+        if (cliente.tieneCuenta(cuenta.getTipoCuenta(), cuenta.getMoneda())) {
+            throw new TipoCuentaAlreadyExistsException("El cliente ya tiene una cuenta de tipo "
+                    + cuenta.getTipoCuenta() + " y moneda " + cuenta.getMoneda());
+        }
+        cliente.addCuenta(cuenta);
+        clienteRepository.save(cliente);
+    }
 
     /**
      * Busca un cliente por DNI
+     *
      * @param dni DNI del cliente
      * @return Cliente encontrado
      * @throws IllegalArgumentException Si el cliente no existe
@@ -67,6 +83,7 @@ public class ClienteService {
 
     /**
      * Busca un cliente por DNI (solo datos básicos, sin relaciones)
+     *
      * @param dni DNI del cliente
      * @return Cliente encontrado
      * @throws IllegalArgumentException Si el cliente no existe
@@ -82,6 +99,7 @@ public class ClienteService {
 
     /**
      * Obtiene todos los clientes del sistema con sus cuentas cargadas
+     *
      * @return Lista de todos los clientes
      */
     @Transactional(readOnly = true)
@@ -91,6 +109,7 @@ public class ClienteService {
 
     /**
      * Verifica si un cliente existe por DNI
+     *
      * @param dni DNI a verificar
      * @return true si existe, false si no
      */
@@ -101,6 +120,7 @@ public class ClienteService {
 
     /**
      * Actualiza un cliente existente
+     *
      * @param cliente Cliente a actualizar
      * @return Cliente actualizado
      */
@@ -110,6 +130,7 @@ public class ClienteService {
 
     /**
      * Elimina un cliente por DNI
+     *
      * @param dni DNI del cliente a eliminar
      * @throws IllegalArgumentException Si el cliente no existe
      */

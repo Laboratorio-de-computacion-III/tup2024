@@ -1,5 +1,10 @@
 package ar.edu.utn.frbb.tup.model;
 
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import ar.edu.utn.frbb.tup.controller.dto.ClienteDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,12 +12,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import org.hibernate.annotations.CascadeType;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "clientes")
@@ -56,29 +55,15 @@ public class Cliente extends Persona {
         }
     }
 
-    public TipoPersona getTipoPersona() {
-        return tipoPersona;
-    }
 
     public void setTipoPersona(TipoPersona tipoPersona) {
         this.tipoPersona = tipoPersona;
     }
 
-    public String getBanco() {
-        return banco;
+    public TipoPersona getTipoPersona() {
+        return tipoPersona;
     }
 
-    public void setBanco(String banco) {
-        this.banco = banco;
-    }
-
-    public LocalDate getFechaAlta() {
-        return fechaAlta;
-    }
-
-    public void setFechaAlta(LocalDate fechaAlta) {
-        this.fechaAlta = fechaAlta;
-    }
 
     public Set<Cuenta> getCuentas() {
         return cuentas;

@@ -1,5 +1,11 @@
 package ar.edu.utn.frbb.tup.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import ar.edu.utn.frbb.tup.controller.dto.CuotaDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,10 +17,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PostLoad;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "prestamos")
@@ -29,10 +31,10 @@ public class Prestamo {
     private Long numeroCliente;
 
     @Column(name = "monto_prestamo", nullable = false)
-    private Double montoPrestamo;
+    private BigDecimal montoPrestamo;
 
     @Column(name = "monto_con_intereses", nullable = false)
-    private Double montoConIntereses;
+    private BigDecimal montoConIntereses;
 
     @Column(name = "plazo_meses", nullable = false)
     private Integer plazoMeses;
@@ -52,7 +54,7 @@ public class Prestamo {
     private Integer pagosRealizados;
 
     @Column(name = "saldo_restante", nullable = false)
-    private Double saldoRestante;
+    private BigDecimal saldoRestante;
 
     // Plan de pagos almacenado como JSON o como entidades separadas
     // Por simplicidad, lo mantenemos transitorio y se calcula dinámicamente
@@ -78,18 +80,18 @@ public class Prestamo {
         // Calcular el interés total
         double tasaAnual = INTERES_ANUAL;
         double anios = plazoMeses / 12.0;
-        double montoTotal = montoPrestamo * (1 + (tasaAnual * anios));
+        BigDecimal montoTotal = montoPrestamo.multiply(BigDecimal.valueOf(1 + (tasaAnual * anios)));
 
         this.montoConIntereses = montoTotal;
         this.saldoRestante = montoTotal;
 
         // Calcular cuota mensual (todas iguales)
-        double cuotaMensual = montoTotal / plazoMeses;
+        BigDecimal cuotaMensual = montoTotal.divide(new BigDecimal(plazoMeses), 2, RoundingMode.HALF_UP);
 
         // Generar plan de pagos
         this.planPagos = new ArrayList<>();
         for (int i = 1; i <= plazoMeses; i++) {
-            CuotaDto cuota = new CuotaDto(i, Math.round(cuotaMensual * 100.0) / 100.0);
+            CuotaDto cuota = new CuotaDto(i, cuotaMensual);
             planPagos.add(cuota);
         }
     }
@@ -104,38 +106,19 @@ public class Prestamo {
         }
     }
 
-    // Getters y Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getNumeroCliente() {
-        return numeroCliente;
-    }
 
     public void setNumeroCliente(Long numeroCliente) {
         this.numeroCliente = numeroCliente;
     }
 
-    public Double getMontoPrestamo() {
+    public BigDecimal getMontoPrestamo() {
         return montoPrestamo;
     }
 
-    public void setMontoPrestamo(Double montoPrestamo) {
+    public void setMontoPrestamo(BigDecimal montoPrestamo) {
         this.montoPrestamo = montoPrestamo;
     }
 
-    public Double getMontoConIntereses() {
-        return montoConIntereses;
-    }
-
-    public void setMontoConIntereses(Double montoConIntereses) {
-        this.montoConIntereses = montoConIntereses;
-    }
 
     public Integer getPlazoMeses() {
         return plazoMeses;
@@ -153,17 +136,6 @@ public class Prestamo {
         this.moneda = moneda;
     }
 
-    public LocalDate getFechaSolicitud() {
-        return fechaSolicitud;
-    }
-
-    public void setFechaSolicitud(LocalDate fechaSolicitud) {
-        this.fechaSolicitud = fechaSolicitud;
-    }
-
-    public EstadoPrestamo getEstado() {
-        return estado;
-    }
 
     public void setEstado(EstadoPrestamo estado) {
         this.estado = estado;
@@ -173,27 +145,17 @@ public class Prestamo {
         return pagosRealizados;
     }
 
-    public void setPagosRealizados(Integer pagosRealizados) {
-        this.pagosRealizados = pagosRealizados;
-    }
 
-    public Double getSaldoRestante() {
+    public BigDecimal getSaldoRestante() {
         return saldoRestante;
     }
 
-    public void setSaldoRestante(Double saldoRestante) {
-        this.saldoRestante = saldoRestante;
-    }
 
     public List<CuotaDto> getPlanPagos() {
         if (planPagos == null || planPagos.isEmpty()) {
             calcularPlanPagos();
         }
         return planPagos;
-    }
-
-    public void setPlanPagos(List<CuotaDto> planPagos) {
-        this.planPagos = planPagos;
     }
 
     @Override

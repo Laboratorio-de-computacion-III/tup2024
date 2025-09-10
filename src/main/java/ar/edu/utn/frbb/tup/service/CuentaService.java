@@ -1,5 +1,14 @@
 package ar.edu.utn.frbb.tup.service;
 
+import java.util.List;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ar.edu.utn.frbb.tup.controller.PrestamoController;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.TipoCuenta;
@@ -8,16 +17,11 @@ import ar.edu.utn.frbb.tup.model.exception.CuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.model.exception.TipoCuentaAlreadyExistsException;
 import ar.edu.utn.frbb.tup.repository.CuentaRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
 @Service
 @Transactional
 public class CuentaService {
+
+    private static final Logger log = LoggerFactory.getLogger(PrestamoController.class);
 
     @Autowired
     private CuentaRepository cuentaRepository;
@@ -58,6 +62,7 @@ public class CuentaService {
         clienteService.asociarCuenta(cuenta, dniTitular);
 
         System.out.println("Cuenta creada exitosamente: " + cuenta);
+        log.info("Cuenta creada exitosamente: {}", cuenta);
     }
 
     /**

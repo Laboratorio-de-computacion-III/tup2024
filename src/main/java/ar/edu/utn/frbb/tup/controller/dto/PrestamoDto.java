@@ -1,10 +1,12 @@
 package ar.edu.utn.frbb.tup.controller.dto;
 
+import java.math.BigDecimal;
+
 public class PrestamoDto {
 
     private long numeroCliente;
     private int plazoMeses;
-    private double montoPrestamo;
+    private BigDecimal montoPrestamo;
     private String moneda;
 
 
@@ -24,11 +26,11 @@ public class PrestamoDto {
         this.plazoMeses = plazoMeses;
     }
 
-    public double getMontoPrestamo() {
+    public BigDecimal getMontoPrestamo() {
         return montoPrestamo;
     }
 
-    public void setMontoPrestamo(double montoPrestamo) {
+    public void setMontoPrestamo(BigDecimal montoPrestamo) {
         this.montoPrestamo = montoPrestamo;
     }
 

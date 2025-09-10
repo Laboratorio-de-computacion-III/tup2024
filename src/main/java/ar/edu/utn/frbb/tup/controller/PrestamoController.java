@@ -1,5 +1,7 @@
 package ar.edu.utn.frbb.tup.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Prestamos", description = "Operaciones relacionadas con la gestión de prestamos del banco")
 public class PrestamoController {
 
+    private static final Logger log = LoggerFactory.getLogger(PrestamoController.class);
+
     @Autowired
     private PrestamoService prestamoService;
 
@@ -38,11 +42,10 @@ public class PrestamoController {
         PrestamoResponseDto response = new PrestamoResponseDto();
 
         try {
-            // Log para debugging
-            System.out.println("Solicitud de préstamo recibida: DNI=" + prestamoDto.getNumeroCliente() +
-                    ", Monto=" + prestamoDto.getMontoPrestamo() +
-                    ", Plazo=" + prestamoDto.getPlazoMeses() +
-                    ", Moneda=" + prestamoDto.getMoneda());
+
+            log.info("Solicitud de préstamo recibida: DNI={}, Monto={}, Plazo={}, Moneda={}",
+                    prestamoDto.getNumeroCliente(), prestamoDto.getMontoPrestamo(),
+                    prestamoDto.getPlazoMeses(), prestamoDto.getMoneda());
 
             // Validar datos de entrada
             prestamoValidator.validate(prestamoDto);
@@ -53,25 +56,25 @@ public class PrestamoController {
             return ResponseEntity.ok(response);
 
         } catch (CreditoRechazadoException e) {
-            System.err.println("Crédito rechazado: " + e.getMessage());
+            log.error("Crédito rechazado: " + e.getMessage());
             response.setEstado("RECHAZADO");
             response.setMensaje(e.getMessage());
             return ResponseEntity.ok(response);
 
         } catch (PrestamoException e) {
-            System.err.println("Error de préstamo: " + e.getMessage());
+            log.error("Error de préstamo: " + e.getMessage());
             response.setEstado("RECHAZADO");
             response.setMensaje(e.getMessage());
             return ResponseEntity.badRequest().body(response);
 
         } catch (IllegalArgumentException e) {
-            System.err.println("Argumentos inválidos: " + e.getMessage());
+            log.error("Argumentos inválidos: " + e.getMessage());
             response.setEstado("RECHAZADO");
             response.setMensaje(e.getMessage());
             return ResponseEntity.badRequest().body(response);
 
         } catch (Exception e) {
-            System.err.println("Error inesperado: " + e.getMessage());
+            log.error("Error inesperado: " + e.getMessage());
             e.printStackTrace();
             response.setEstado("ERROR");
             response.setMensaje("Error procesando la solicitud: " + e.getMessage());

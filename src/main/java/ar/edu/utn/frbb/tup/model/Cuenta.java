@@ -1,8 +1,8 @@
 package ar.edu.utn.frbb.tup.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Random;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import ar.edu.utn.frbb.tup.model.exception.CantidadNegativaException;
@@ -29,7 +29,7 @@ public class Cuenta {
     private LocalDateTime fechaCreacion;
 
     @Column(name = "balance", nullable = false)
-    private Integer balance;
+    private BigDecimal balance;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_cuenta", nullable = false, length = 20)
@@ -46,7 +46,7 @@ public class Cuenta {
 
     public Cuenta() {
         this.numeroCuenta = Math.abs(new Random().nextLong());
-        this.balance = 0;
+        this.balance = BigDecimal.ZERO;
         this.fechaCreacion = LocalDateTime.now();
     }
 
@@ -55,24 +55,12 @@ public class Cuenta {
         return numeroCuenta;
     }
 
-    public void setNumeroCuenta(Long numeroCuenta) {
-        this.numeroCuenta = numeroCuenta;
-    }
 
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public Cuenta setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-        return this;
-    }
-
-    public Integer getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public Cuenta setBalance(Integer balance) {
+    public Cuenta setBalance(BigDecimal balance) {
         this.balance = balance;
         return this;
     }
@@ -104,19 +92,19 @@ public class Cuenta {
     }
 
     // Métodos de negocio
-    public void debitarDeCuenta(int cantidadADebitar) throws NoAlcanzaException, CantidadNegativaException {
-        if (cantidadADebitar < 0) {
+    public void debitarDeCuenta(BigDecimal cantidadADebitar) throws NoAlcanzaException, CantidadNegativaException {
+        if (cantidadADebitar.compareTo(BigDecimal.ZERO) < 0) {
             throw new CantidadNegativaException();
         }
 
-        if (balance < cantidadADebitar) {
+        if (this.balance.compareTo(cantidadADebitar) < 0) {
             throw new NoAlcanzaException();
         }
-        this.balance = this.balance - cantidadADebitar;
+        this.balance = this.balance.subtract(cantidadADebitar);
     }
 
-    public void forzaDebitoDeCuenta(int i) {
-        this.balance = this.balance - i;
+    public void forzaDebitoDeCuenta(BigDecimal i) {
+        this.balance = this.balance.subtract(i);
     }
 
     @Override

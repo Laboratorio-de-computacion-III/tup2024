@@ -1,6 +1,8 @@
 package ar.edu.utn.frbb.tup.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,10 +44,15 @@ public class CuentaController {
         Cliente cliente = clienteService.buscarClientePorDni(cuentaDto.getNumeroCliente());
         Cuenta cuenta = new Cuenta();
         cuenta.setTipoCuenta(cuentaDto.getTipoCuenta());
-        cuenta.setMoneda(cuentaDto.getMoneda()); // LÍNEA AGREGADA
+        cuenta.setMoneda(cuentaDto.getMoneda());
         cuentaService.darDeAltaCuenta(cuenta, cuentaDto.getNumeroCliente());
         cuenta.setTitular(cliente);
 
         return cuenta;
+    }
+
+    @GetMapping("/{id}")
+    public List<Cuenta> obtenerCuentas(@RequestBody long id) {
+        return cuentaService.obtenerCuentasPorCliente(id);
     }
 }

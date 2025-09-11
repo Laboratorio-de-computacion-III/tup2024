@@ -47,10 +47,8 @@ public class PrestamoController {
                     prestamoDto.getNumeroCliente(), prestamoDto.getMontoPrestamo(),
                     prestamoDto.getPlazoMeses(), prestamoDto.getMoneda());
 
-            // Validar datos de entrada
             prestamoValidator.validate(prestamoDto);
 
-            // Procesar solicitud de préstamo
             response = prestamoService.solicitarPrestamo(prestamoDto);
 
             return ResponseEntity.ok(response);

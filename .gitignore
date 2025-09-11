@@ -26,4 +26,4 @@ replay_pid*
 *.iml
 target
 
-application-local.properties
+*.properties

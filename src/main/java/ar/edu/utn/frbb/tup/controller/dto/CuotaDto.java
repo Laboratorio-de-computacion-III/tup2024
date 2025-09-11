@@ -15,4 +15,19 @@ public class CuotaDto {
         this.monto = monto;
     }
 
+    public int getCuotaNro() {
+        return cuotaNro;
+    }
+
+    public void setCuotaNro(int cuotaNro) {
+        this.cuotaNro = cuotaNro;
+    }
+
+    public BigDecimal getMonto() {
+        return monto;
+    }
+
+    public void setMonto(BigDecimal monto) {
+        this.monto = monto;
+    }
 }

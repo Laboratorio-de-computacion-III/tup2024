@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.repository;
 
 import ar.edu.utn.frbb.tup.model.Cliente;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     /**
      * Busca un cliente por DNI
+     *
      * @param dni DNI del cliente
      * @return Cliente encontrado o vacío
      */
@@ -21,36 +23,15 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     /**
      * Verifica si existe un cliente con el DNI especificado
+     *
      * @param dni DNI a verificar
      * @return true si existe, false si no
      */
     boolean existsByDni(Long dni);
 
     /**
-     * Busca clientes por tipo de persona
-     * @param tipoPersona Tipo de persona (FISICA, JURIDICA)
-     * @return Lista de clientes
-     */
-    List<Cliente> findByTipoPersona(String tipoPersona);
-
-    /**
-     * Busca un cliente con sus cuentas cargadas
-     * @param dni DNI del cliente
-     * @return Cliente con cuentas
-     */
-    @Query("SELECT c FROM Cliente c LEFT JOIN FETCH c.cuentas WHERE c.dni = :dni")
-    Optional<Cliente> findByDniWithCuentas(@Param("dni") Long dni);
-
-    /**
-     * Busca un cliente con sus préstamos cargados
-     * @param dni DNI del cliente
-     * @return Cliente con préstamos
-     */
-    @Query("SELECT c FROM Cliente c LEFT JOIN FETCH c.prestamos WHERE c.dni = :dni")
-    Optional<Cliente> findByDniWithPrestamos(@Param("dni") Long dni);
-
-    /**
      * Busca un cliente con cuentas y préstamos cargados
+     *
      * @param dni DNI del cliente
      * @return Cliente completo
      */
@@ -62,6 +43,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     /**
      * Obtiene todos los clientes con sus cuentas
+     *
      * @return Lista de clientes con cuentas
      */
     @Query("SELECT DISTINCT c FROM Cliente c LEFT JOIN FETCH c.cuentas")

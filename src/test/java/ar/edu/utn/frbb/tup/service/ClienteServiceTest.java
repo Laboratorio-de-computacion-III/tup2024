@@ -51,7 +51,7 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void testClienteMenor18Años() {
+    public void testClienteMenor18() {
         ClienteDto clienteMenorDeEdad = new ClienteDto();
         clienteMenorDeEdad.setFechaNacimiento("2020-03-18");
         assertThrows(IllegalArgumentException.class, () -> clienteService.darDeAltaCliente(clienteMenorDeEdad));
@@ -100,7 +100,7 @@ public class ClienteServiceTest {
     @Test
     public void testAgregarCuentaAClienteSuccess() throws TipoCuentaAlreadyExistsException {
         Cliente pepeRino = createClienteForTesting();
-        Cuenta cuenta = createCuentaForTesting(PESOS, BALANCE_INICIAL, CAJA_AHORRO);
+        Cuenta cuenta = createCuentaForTesting(PESOS, CAJA_AHORRO);
 
         when(clienteRepository.findByDni(26456439L)).thenReturn(Optional.of(pepeRino));
 
@@ -116,13 +116,13 @@ public class ClienteServiceTest {
     @Test
     public void testAgregarCuentaAClienteDuplicada() throws TipoCuentaAlreadyExistsException {
         Cliente luciano = createClienteForTesting();
-        Cuenta cuenta = createCuentaForTesting(PESOS, BALANCE_INICIAL, CAJA_AHORRO);
+        Cuenta cuenta = createCuentaForTesting(PESOS, CAJA_AHORRO);
 
         when(clienteRepository.findByDni(26456439L)).thenReturn(Optional.of(luciano));
 
         clienteService.agregarCuenta(cuenta, luciano.getDni());
 
-        Cuenta cuenta2 = createCuentaForTesting(PESOS, BALANCE_INICIAL, CAJA_AHORRO);
+        Cuenta cuenta2 = createCuentaForTesting(PESOS, CAJA_AHORRO);
 
         assertThrows(TipoCuentaAlreadyExistsException.class,
                 () -> clienteService.agregarCuenta(cuenta2, luciano.getDni()));
@@ -137,8 +137,8 @@ public class ClienteServiceTest {
     @Test
     public void agregarCajaAhorroYPesosCuentaCorrienteSuccess() throws TipoCuentaAlreadyExistsException {
         Cliente pepeRino = createClienteForTesting();
-        Cuenta cajaAhorro = createCuentaForTesting(PESOS, BALANCE_INICIAL, CAJA_AHORRO);
-        Cuenta cuentaCorriente = createCuentaForTesting(PESOS, BALANCE_INICIAL, CUENTA_CORRIENTE);
+        Cuenta cajaAhorro = createCuentaForTesting(PESOS, CAJA_AHORRO);
+        Cuenta cuentaCorriente = createCuentaForTesting(PESOS, CUENTA_CORRIENTE);
 
         when(clienteRepository.findByDni(26456439L)).thenReturn(Optional.of(pepeRino));
 
@@ -158,8 +158,8 @@ public class ClienteServiceTest {
     @Test
     public void agregarCajaAhorroPesosYCajaAhorroDolaresSuccess() throws TipoCuentaAlreadyExistsException {
         Cliente pepeRino = createClienteForTesting();
-        Cuenta cajaAhorroPesos = createCuentaForTesting(PESOS, BALANCE_INICIAL, CAJA_AHORRO);
-        Cuenta cajaAhorroDolares = createCuentaForTesting(DOLARES, BALANCE_INICIAL, CAJA_AHORRO);
+        Cuenta cajaAhorroPesos = createCuentaForTesting(PESOS, CAJA_AHORRO);
+        Cuenta cajaAhorroDolares = createCuentaForTesting(DOLARES, CAJA_AHORRO);
 
         when(clienteRepository.findByDni(26456439L)).thenReturn(Optional.of(pepeRino));
 
@@ -199,10 +199,10 @@ public class ClienteServiceTest {
         return pepeRino;
     }
 
-    private Cuenta createCuentaForTesting(TipoMoneda moneda, BigDecimal balance, TipoCuenta tipoCuenta) {
+    private Cuenta createCuentaForTesting(TipoMoneda moneda, TipoCuenta tipoCuenta) {
         return new Cuenta()
                 .setMoneda(moneda)
-                .setBalance(balance)
+                .setBalance(BALANCE_INICIAL)
                 .setTipoCuenta(tipoCuenta);
     }
 }

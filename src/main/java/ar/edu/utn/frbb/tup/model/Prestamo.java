@@ -56,15 +56,11 @@ public class Prestamo {
     @Column(name = "saldo_restante", nullable = false)
     private BigDecimal saldoRestante;
 
-    // Plan de pagos almacenado como JSON o como entidades separadas
-    // Por simplicidad, lo mantenemos transitorio y se calcula dinámicamente
     @Transient
     private List<CuotaDto> planPagos;
 
-    // Constante para el interés
     private static final double INTERES_ANUAL = 0.05; // 5% anual
 
-    // Constructores
     public Prestamo() {
         this.fechaSolicitud = LocalDate.now();
         this.pagosRealizados = 0;
@@ -77,18 +73,15 @@ public class Prestamo {
      * Todas las cuotas tienen el mismo valor
      */
     public void calcularPlanPagos() {
-        // Calcular el interés total
-        double tasaAnual = INTERES_ANUAL;
+
         double anios = plazoMeses / 12.0;
-        BigDecimal montoTotal = montoPrestamo.multiply(BigDecimal.valueOf(1 + (tasaAnual * anios)));
+        BigDecimal montoTotal = montoPrestamo.multiply(BigDecimal.valueOf(1 + (INTERES_ANUAL * anios)));
 
         this.montoConIntereses = montoTotal;
         this.saldoRestante = montoTotal;
 
-        // Calcular cuota mensual (todas iguales)
         BigDecimal cuotaMensual = montoTotal.divide(new BigDecimal(plazoMeses), 2, RoundingMode.HALF_UP);
 
-        // Generar plan de pagos
         this.planPagos = new ArrayList<>();
         for (int i = 1; i <= plazoMeses; i++) {
             CuotaDto cuota = new CuotaDto(i, cuotaMensual);

@@ -3,8 +3,6 @@ package ar.edu.utn.frbb.tup.controller.validator;
 import org.springframework.stereotype.Component;
 
 import ar.edu.utn.frbb.tup.controller.dto.CuentaDto;
-import ar.edu.utn.frbb.tup.model.TipoCuenta;
-import ar.edu.utn.frbb.tup.model.TipoMoneda;
 
 @Component
 public class CuentaValidator {

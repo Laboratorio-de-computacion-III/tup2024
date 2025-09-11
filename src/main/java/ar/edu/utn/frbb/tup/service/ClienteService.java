@@ -53,7 +53,7 @@ public class ClienteService {
      */
     public void agregarCuenta(Cuenta cuenta, long dniTitular) throws TipoCuentaAlreadyExistsException {
         Optional<Cliente> clienteOpt = clienteRepository.findByDni(dniTitular);
-        if (!clienteOpt.isPresent()) {
+        if (clienteOpt.isEmpty()) {
             throw new IllegalArgumentException("El cliente no existe");
         }
         Cliente cliente = clienteOpt.get();
@@ -75,7 +75,7 @@ public class ClienteService {
     @Transactional(readOnly = true)
     public Cliente buscarClientePorDni(long dni) {
         Optional<Cliente> cliente = clienteRepository.findByDniWithCuentasAndPrestamos(dni);
-        if (!cliente.isPresent()) {
+        if (cliente.isEmpty()) {
             throw new IllegalArgumentException("El cliente no existe");
         }
         return cliente.get();
@@ -89,9 +89,9 @@ public class ClienteService {
      * @throws IllegalArgumentException Si el cliente no existe
      */
     @Transactional(readOnly = true)
-    public Cliente buscarClienteBasicoPorDni(long dni) {
+    public Cliente obtenerClienteByDni(long dni) {
         Optional<Cliente> cliente = clienteRepository.findByDni(dni);
-        if (!cliente.isPresent()) {
+        if (cliente.isEmpty()) {
             throw new IllegalArgumentException("El cliente no existe");
         }
         return cliente.get();
@@ -124,21 +124,9 @@ public class ClienteService {
      * @param cliente Cliente a actualizar
      * @return Cliente actualizado
      */
+    //TODO: Pendiente para proximas versiones
     public Cliente actualizarCliente(Cliente cliente) {
         return clienteRepository.save(cliente);
-    }
-
-    /**
-     * Elimina un cliente por DNI
-     *
-     * @param dni DNI del cliente a eliminar
-     * @throws IllegalArgumentException Si el cliente no existe
-     */
-    public void eliminarCliente(long dni) {
-        if (!clienteRepository.existsByDni(dni)) {
-            throw new IllegalArgumentException("El cliente no existe");
-        }
-        clienteRepository.deleteById(dni);
     }
 
     public void asociarCuenta(Cuenta cuenta, long dniTitular) {

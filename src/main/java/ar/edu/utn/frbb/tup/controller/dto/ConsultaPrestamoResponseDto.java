@@ -10,10 +10,10 @@ public class ConsultaPrestamoResponseDto {
 
     public static class PrestamoInfo {
 
-        private BigDecimal monto;
-        private int plazoMeses;
-        private int pagosRealizados;
-        private BigDecimal saldoRestante;
+        private final BigDecimal monto;
+        private final int plazoMeses;
+        private final int pagosRealizados;
+        private final BigDecimal saldoRestante;
 
         public PrestamoInfo(BigDecimal monto, int plazoMeses, int pagosRealizados, BigDecimal saldoRestante) {
             this.monto = monto;
@@ -22,6 +22,21 @@ public class ConsultaPrestamoResponseDto {
             this.saldoRestante = saldoRestante;
         }
 
+        public BigDecimal getMonto() {
+            return monto;
+        }
+
+        public int getPlazoMeses() {
+            return plazoMeses;
+        }
+
+        public int getPagosRealizados() {
+            return pagosRealizados;
+        }
+
+        public BigDecimal getSaldoRestante() {
+            return saldoRestante;
+        }
     }
 
     public void setNumeroCliente(long numeroCliente) {

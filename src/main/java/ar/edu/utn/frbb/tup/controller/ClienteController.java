@@ -35,10 +35,16 @@ public class ClienteController {
         return clienteService.obtenerClientes();
     }
 
+    @GetMapping("/{id}")
+    public Cliente obtenerClientePorId(@RequestBody Long id) {
+        return clienteService.obtenerClienteByDni(id);
+    }
+
     @PostMapping
     public Cliente crearCliente(@RequestBody ClienteDto clienteDto) throws ClienteAlreadyExistsException {
         clienteValidator.validate(clienteDto);
         return clienteService.darDeAltaCliente(clienteDto);
     }
+
 
 }

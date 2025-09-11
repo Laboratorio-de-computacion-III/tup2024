@@ -25,7 +25,6 @@ import ar.edu.utn.frbb.tup.controller.dto.PrestamoResponseDto;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.Prestamo;
-import ar.edu.utn.frbb.tup.model.TipoCuenta;
 import ar.edu.utn.frbb.tup.model.TipoMoneda;
 import ar.edu.utn.frbb.tup.model.exception.CreditoRechazadoException;
 import ar.edu.utn.frbb.tup.model.exception.PrestamoException;
@@ -34,8 +33,8 @@ import ar.edu.utn.frbb.tup.repository.PrestamoRepository;
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PrestamoServiceTest {
-    
-    private static final  BigDecimal BALANCE_INICIAL = BigDecimal.valueOf(10000);
+
+    private static final BigDecimal BALANCE_INICIAL = BigDecimal.valueOf(10000);
     private static final long NUMERO_CLIENTE = 12345678;
     private static final int PLAZO_MESES = 6;
 
@@ -57,9 +56,8 @@ public class PrestamoServiceTest {
     }
 
     @Test
-    public void solicitarPrestamoFailsWhenClienteDoesNotHaveCuentaInRequestedCurrency() {
-        PrestamoDto prestamoDto = createPrestamoDtoForTesting(NUMERO_CLIENTE, BALANCE_INICIAL, PLAZO_MESES,
-                "DOLARES");
+    public void solicitarPrestamoFailsWhenClienteNoTieneCuentaEnMonedaSolicitada() {
+        PrestamoDto prestamoDto = createPrestamoDtoForTesting(NUMERO_CLIENTE, "DOLARES");
 
         Cliente cliente = new Cliente();
         cliente.setDni(NUMERO_CLIENTE);
@@ -71,17 +69,15 @@ public class PrestamoServiceTest {
     }
 
     @Test
-    public void solicitarPrestamoFailsWhenRequestedCurrencyIsInvalid() {
-        PrestamoDto prestamoDto = createPrestamoDtoForTesting(NUMERO_CLIENTE, BALANCE_INICIAL, PLAZO_MESES,
-                "BITCOIN");
+    public void solicitarPrestamoFailsWhenMonedaSolicitadaEsInvalida() {
+        PrestamoDto prestamoDto = createPrestamoDtoForTesting(NUMERO_CLIENTE, "BITCOIN");
 
         assertThrows(PrestamoException.class, () -> prestamoService.solicitarPrestamo(prestamoDto));
     }
 
     @Test
     public void solicitarPrestamoFailsWhenClienteNotFound() {
-        PrestamoDto prestamoDto = createPrestamoDtoForTesting(99999999, BALANCE_INICIAL, PLAZO_MESES,
-                "PESOS");
+        PrestamoDto prestamoDto = createPrestamoDtoForTesting(99999999, "PESOS");
 
         when(clienteService.buscarClientePorDni(99999999)).thenThrow(
                 new IllegalArgumentException("Cliente no encontrado"));
@@ -90,14 +86,13 @@ public class PrestamoServiceTest {
     }
 
     @Test
-    public void solicitarPrestamoFailsWhenCreditScoreIsRejected() {
-        PrestamoDto prestamoDto = createPrestamoDtoForTesting(NUMERO_CLIENTE, BALANCE_INICIAL, PLAZO_MESES,
-                "PESOS");
+    public void solicitarPrestamoFailsWhenCalificacionCrediticiaRechazado() {
+        PrestamoDto prestamoDto = createPrestamoDtoForTesting(NUMERO_CLIENTE, "PESOS");
 
         Cliente cliente = new Cliente();
         cliente.setDni(NUMERO_CLIENTE);
 
-        Cuenta cuenta = createCuentaForTesting(PESOS, BALANCE_INICIAL, CAJA_AHORRO);
+        Cuenta cuenta = createCuentaForTesting();
 
         cliente.addCuenta(cuenta);
 
@@ -109,14 +104,13 @@ public class PrestamoServiceTest {
     }
 
     @Test
-    public void solicitarPrestamoSucceedsWhenAllConditionsAreMet() throws PrestamoException, CreditoRechazadoException {
-        PrestamoDto prestamoDto = createPrestamoDtoForTesting(NUMERO_CLIENTE, BALANCE_INICIAL, PLAZO_MESES,
-                "PESOS");
+    public void solicitarPrestamoSucceedsWhenCumpleCondiciones() throws PrestamoException, CreditoRechazadoException {
+        PrestamoDto prestamoDto = createPrestamoDtoForTesting(NUMERO_CLIENTE, "PESOS");
 
         Cliente cliente = new Cliente();
         cliente.setDni(NUMERO_CLIENTE);
 
-        Cuenta cuenta = createCuentaForTesting(PESOS, BALANCE_INICIAL, CAJA_AHORRO);
+        Cuenta cuenta = createCuentaForTesting();
 
         cliente.addCuenta(cuenta);
 
@@ -132,19 +126,19 @@ public class PrestamoServiceTest {
         verify(cuentaService, times(1)).actualizarCuenta(cuenta);
     }
 
-    private Cuenta createCuentaForTesting(TipoMoneda moneda, BigDecimal balance, TipoCuenta tipoCuenta) {
+    private Cuenta createCuentaForTesting() {
         return new Cuenta()
-                .setMoneda(moneda)
-                .setBalance(balance)
-                .setTipoCuenta(tipoCuenta);
+                .setMoneda(PESOS)
+                .setBalance(BALANCE_INICIAL)
+                .setTipoCuenta(CAJA_AHORRO);
     }
 
-    private PrestamoDto createPrestamoDtoForTesting(long numeroCliente, BigDecimal montoPrestamo, int plazoMeses,
+    private PrestamoDto createPrestamoDtoForTesting(long numeroCliente,
             String moneda) {
         PrestamoDto prestamoDto = new PrestamoDto();
         prestamoDto.setNumeroCliente(numeroCliente);
-        prestamoDto.setMontoPrestamo(montoPrestamo);
-        prestamoDto.setPlazoMeses(plazoMeses);
+        prestamoDto.setMontoPrestamo(BALANCE_INICIAL);
+        prestamoDto.setPlazoMeses(PLAZO_MESES);
         prestamoDto.setMoneda(moneda);
         return prestamoDto;
     }

@@ -7,7 +7,7 @@ Aplicación en **Spring Boot** para gestionar clientes, cuentas y préstamos.
 ## 🚀 Configuración
 
 ### Prerrequisitos
-- **Java** 21+
+- **Java** 17+
 - **Maven** 3.8+
 - **PostgreSQL** 12+
 

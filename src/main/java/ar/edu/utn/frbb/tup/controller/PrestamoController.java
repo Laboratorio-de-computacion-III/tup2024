@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * Controlador REST para la gestión de prestamos
  */
 @RestController
-@RequestMapping("/api/prestamo")
+@RequestMapping("/prestamo")
 @Tag(name = "Prestamos", description = "Operaciones relacionadas con la gestión de prestamos del banco")
 public class PrestamoController {
 

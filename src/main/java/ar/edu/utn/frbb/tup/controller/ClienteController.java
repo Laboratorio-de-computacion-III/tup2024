@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,9 +36,9 @@ public class ClienteController {
         return clienteService.obtenerClientes();
     }
 
-    @GetMapping("/{id}")
-    public Cliente obtenerClientePorId(@RequestBody Long id) {
-        return clienteService.obtenerClienteByDni(id);
+    @GetMapping("/{clienteId}")
+    public Cliente obtenerClientePorId(@PathVariable Long clienteId) {
+        return clienteService.obtenerClienteByDni(clienteId);
     }
 
     @PostMapping

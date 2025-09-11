@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,8 +52,8 @@ public class CuentaController {
         return cuenta;
     }
 
-    @GetMapping("/{id}")
-    public List<Cuenta> obtenerCuentas(@RequestBody long id) {
-        return cuentaService.obtenerCuentasPorCliente(id);
+    @GetMapping("/{clienteId}")
+    public List<Cuenta> obtenerCuentas(@PathVariable Long clienteId) {
+        return cuentaService.obtenerCuentasPorCliente(clienteId);
     }
 }

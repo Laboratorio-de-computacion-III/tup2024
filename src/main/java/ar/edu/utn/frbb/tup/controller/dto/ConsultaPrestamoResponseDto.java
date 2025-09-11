@@ -8,6 +8,14 @@ public class ConsultaPrestamoResponseDto {
     private long numeroCliente;
     private List<PrestamoInfo> prestamos;
 
+    public long getNumeroCliente() {
+        return numeroCliente;
+    }
+
+    public List<PrestamoInfo> getPrestamos() {
+        return prestamos;
+    }
+
     public static class PrestamoInfo {
 
         private final BigDecimal monto;

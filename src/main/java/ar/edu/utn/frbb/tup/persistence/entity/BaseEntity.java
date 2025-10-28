@@ -1,14 +1,24 @@
 package ar.edu.utn.frbb.tup.persistence.entity;
 
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class BaseEntity {
-    private final Long Id;
+    @Id
+    private Long id;
+
+    protected BaseEntity() {}
 
     public BaseEntity(long id) {
-        Id = id;
+        this.id = id;
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
